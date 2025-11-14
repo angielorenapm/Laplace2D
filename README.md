@@ -266,22 +266,7 @@ The computed solution represents a **steady-state electrostatic equilibrium**:
 
 ---
 
-## 8. Building Documentation 📚
-
-```bash
-cd docs
-make html
-```
-
-Output in:
-
-```text
-docs/_build/html/
-```
-
----
-
-## 9. Running Tests 🧪
+## 8. Running Tests 🧪
 
 ```bash
 pytest
@@ -290,7 +275,11 @@ pytest
 With coverage:
 
 ```bash
-pytest --cov=campo_estatico_mdf --cov-report=html
+python -m unittest campo_estatico_mdf.tests.test_campo_estatico_mdf -v
+```
+Alternatively
+```bash
+python -m pytest campo_estatico_mdf/tests/test_campo_estatico_mdf.py -v
 ```
 
 ---
