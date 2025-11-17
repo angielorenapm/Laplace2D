@@ -1,0 +1,246 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="es" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>campo_estatico_mdf.campo_estatico_mdf &mdash; documentación de Laplace2D - 1.0.0</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=36c4ab74"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../_static/translations.js?v=f85f4cfb"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Índice" href="../../genindex.html" />
+    <link rel="search" title="Búsqueda" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Laplace2D
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Buscar documentos" aria-label="Buscar documentos" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contenidos:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../campo_estatico_mdf.html">Módulo campo_estatico_mdf</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Laplace2D</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Código de módulo</a></li>
+      <li class="breadcrumb-item active">campo_estatico_mdf.campo_estatico_mdf</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Código fuente para campo_estatico_mdf.campo_estatico_mdf</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Tuple</span>
+
+<div class="viewcode-block" id="LaplaceSolver2D">
+<a class="viewcode-back" href="../../campo_estatico_mdf.html#campo_estatico_mdf.LaplaceSolver2D">[documentos]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">LaplaceSolver2D</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Resuelve la Ecuación de Laplace en 2D usando el Método de Diferencias Finitas</span>
+<span class="sd">    con el método iterativo de Gauss-Seidel.</span>
+<span class="sd">    </span>
+<span class="sd">    Attributes:</span>
+<span class="sd">        N (int): Tamaño de la malla (N x N)</span>
+<span class="sd">        V (np.ndarray): Matriz del potencial eléctrico</span>
+<span class="sd">        tolerance (float): Tolerancia para la convergencia</span>
+<span class="sd">        max_iter (int): Número máximo de iteraciones</span>
+<span class="sd">        h (float): Espaciado de la malla</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+<div class="viewcode-block" id="LaplaceSolver2D.__init__">
+<a class="viewcode-back" href="../../campo_estatico_mdf.html#campo_estatico_mdf.LaplaceSolver2D.__init__">[documentos]</a>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">N</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">50</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Inicializa el solver con una malla de N x N puntos.</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            N (int): Tamaño de la malla. Default es 50.</span>
+<span class="sd">            </span>
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError: Si N es menor que 3</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">N</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;El tamaño de la malla debe ser al menos 3x3&quot;</span><span class="p">)</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">N</span> <span class="o">=</span> <span class="n">N</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">V</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">N</span><span class="p">,</span> <span class="n">N</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tolerance</span> <span class="o">=</span> <span class="mf">1e-5</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_iter</span> <span class="o">=</span> <span class="mi">10000</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">h</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="p">(</span><span class="n">N</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># Espaciado normalizado</span></div>
+
+    
+<div class="viewcode-block" id="LaplaceSolver2D.set_boundary_conditions">
+<a class="viewcode-back" href="../../campo_estatico_mdf.html#campo_estatico_mdf.LaplaceSolver2D.set_boundary_conditions">[documentos]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_boundary_conditions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">left</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">right</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span> 
+                              <span class="n">top</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">bottom</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Establece las condiciones de contorno para los cuatro bordes.</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            left (float): Voltaje en el borde izquierdo. Default 0.0</span>
+<span class="sd">            right (float): Voltaje en el borde derecho. Default 0.0</span>
+<span class="sd">            top (float): Voltaje en el borde superior. Default 0.0</span>
+<span class="sd">            bottom (float): Voltaje en el borde inferior. Default 0.0</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Borde izquierdo (x=0)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">V</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">left</span>
+        
+        <span class="c1"># Borde derecho (x=1)  </span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">V</span><span class="p">[:,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">right</span>
+        
+        <span class="c1"># Borde superior (y=1) - excluyendo esquinas</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">N</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">V</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">top</span>
+        
+        <span class="c1"># Borde inferior (y=0) - excluyendo esquinas</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">N</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">V</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">bottom</span>
+        
+        <span class="c1"># Manejar esquinas explícitamente</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">V</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">bottom</span>    <span class="c1"># Esquina inferior izquierda</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">V</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">bottom</span>   <span class="c1"># Esquina inferior derecha</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">V</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">top</span>      <span class="c1"># Esquina superior izquierda</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">V</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">top</span>     <span class="c1"># Esquina superior derecha</span></div>
+
+    
+<div class="viewcode-block" id="LaplaceSolver2D.resolver">
+<a class="viewcode-back" href="../../campo_estatico_mdf.html#campo_estatico_mdf.LaplaceSolver2D.resolver">[documentos]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">resolver</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tolerance</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-5</span><span class="p">,</span> <span class="n">max_iter</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10000</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Resuelve la ecuación de Laplace usando el método iterativo de Gauss-Seidel.</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            tolerance (float): Tolerancia para la convergencia. Default 1e-5</span>
+<span class="sd">            max_iter (int): Máximo número de iteraciones. Default 10000</span>
+<span class="sd">            </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            int: Número de iteraciones realizadas</span>
+<span class="sd">            </span>
+<span class="sd">        Raises:</span>
+<span class="sd">            RuntimeError: Si no converge en el número máximo de iteraciones</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tolerance</span> <span class="o">=</span> <span class="n">tolerance</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_iter</span> <span class="o">=</span> <span class="n">max_iter</span>
+        
+        <span class="k">for</span> <span class="n">iter_count</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">max_iter</span><span class="p">):</span>
+            <span class="n">max_diff</span> <span class="o">=</span> <span class="mf">0.0</span>
+            
+            <span class="c1"># Actualizar puntos interiores usando el método de Gauss-Seidel</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">N</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+                <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">N</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+                    <span class="n">old_val</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">V</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span>
+                    <span class="n">new_val</span> <span class="o">=</span> <span class="mf">0.25</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">V</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">V</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">+</span> 
+                                     <span class="bp">self</span><span class="o">.</span><span class="n">V</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">V</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">V</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_val</span>
+                    <span class="n">diff</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">new_val</span> <span class="o">-</span> <span class="n">old_val</span><span class="p">)</span>
+                    <span class="n">max_diff</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">max_diff</span><span class="p">,</span> <span class="n">diff</span><span class="p">)</span>
+            
+            <span class="c1"># Verificar convergencia</span>
+            <span class="k">if</span> <span class="n">max_diff</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">tolerance</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">iter_count</span> <span class="o">+</span> <span class="mi">1</span>
+        
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;No convergió después de </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">max_iter</span><span class="si">}</span><span class="s2"> iteraciones&quot;</span><span class="p">)</span></div>
+
+    
+<div class="viewcode-block" id="LaplaceSolver2D.calcular_campo_e">
+<a class="viewcode-back" href="../../campo_estatico_mdf.html#campo_estatico_mdf.LaplaceSolver2D.calcular_campo_e">[documentos]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">calcular_campo_e</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calcula el campo eléctrico E = -∇V usando diferencias centradas.</span>
+<span class="sd">        </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            Tuple[np.ndarray, np.ndarray]: Componentes Ex y Ey del campo eléctrico</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Calcular gradientes usando diferencias centradas</span>
+        <span class="n">Ey</span><span class="p">,</span> <span class="n">Ex</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">gradient</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">V</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">h</span><span class="p">)</span>
+        
+        <span class="c1"># Campo eléctrico E = -∇V</span>
+        <span class="n">Ex</span> <span class="o">=</span> <span class="o">-</span><span class="n">Ex</span>
+        <span class="n">Ey</span> <span class="o">=</span> <span class="o">-</span><span class="n">Ey</span>
+        
+        <span class="k">return</span> <span class="n">Ex</span><span class="p">,</span> <span class="n">Ey</span></div>
+
+    
+<div class="viewcode-block" id="LaplaceSolver2D.get_potential">
+<a class="viewcode-back" href="../../campo_estatico_mdf.html#campo_estatico_mdf.LaplaceSolver2D.get_potential">[documentos]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_potential</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Retorna la matriz del potencial eléctrico.</span>
+<span class="sd">        </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            np.ndarray: Matriz N x N con los valores del potencial</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">V</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Derechos de autor 2025, Angie Lorena &amp; Pablo Patiño.</p>
+  </div>
+
+  Compilado con <a href="https://www.sphinx-doc.org/">Sphinx</a> usando un
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">tema</a>
+    proporcionado por <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
